@@ -40,6 +40,6 @@ public class Movement : MonoBehaviour
 
     private void Kick()
     {
-        
+
     }
 }
