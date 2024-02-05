@@ -1,17 +1,15 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Control;
 using UnityEngine;
 
 public class Leg : MonoBehaviour
 {
-    [SerializeField] private Movement _movement;
+    [SerializeField] private CharacterControl _characterControl;
     [SerializeField] private Parameters _parameters;
     private Rigidbody2D _ball;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if ( collision.transform.tag == "Ball")
+        if (collision.transform.tag == "Ball")
         {
             _ball = collision.GetComponent<Rigidbody2D>();
         }
@@ -27,7 +25,7 @@ public class Leg : MonoBehaviour
 
     private void OnEnable()
     {
-        _movement._kick += Kick;
+        _characterControl._kick += Kick;
     }
 
     private void Kick()
@@ -42,6 +40,6 @@ public class Leg : MonoBehaviour
 
     private void OnDisable()
     {
-        _movement._kick -= Kick;
+        _characterControl._kick -= Kick;
     }
 }

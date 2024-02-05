@@ -1,16 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Control;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private Collider2D[] circleCollider;
-    [SerializeField] private Parameters _parameters;
+    [SerializeField] private CharacterControl _characterControl;
+    [SerializeField] private Collider2D[] _circleCollider;
     private Rigidbody2D _bodyRG;
     private Animator _animator;
-    internal UnityAction _kick;
 
     private void Start()
     {
@@ -20,22 +16,21 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _bodyRG.GetContacts(circleCollider) > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && _bodyRG.GetContacts(_circleCollider) > 0)
         {
-            _bodyRG.AddForce(Vector2.up * _parameters._jump, ForceMode2D.Impulse);
+            _characterControl.Jump(_bodyRG);
         }
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
-            transform.position += Vector3.right * _parameters._speed;
+            _characterControl.Move_Right(transform);
         }
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.position += Vector3.left * _parameters._speed;
+            _characterControl.Move_Left(transform);
         }
         if (Input.GetMouseButtonDown(0))
         {
-            _animator.SetTrigger("Kick");
-            _kick?.Invoke();
+            _characterControl.Kick(_animator);
         }
     }
 }
