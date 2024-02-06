@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -11,6 +13,30 @@ public class GameController : MonoBehaviour
     [SerializeField] private ScoreTrigger _playerGoal;
     [SerializeField] private ScoreTrigger _AIGoal;
 
+    [SerializeField] private TextMeshProUGUI _scores;
+    [SerializeField] private TextMeshProUGUI _time;
+
+    private int _playerScore = 0;
+    private int _PlayerScore
+    {
+        get => _playerScore;
+        set
+        {
+            _playerScore = value;
+            _scores.text = $"{_aiScore} - {_playerScore}";
+        }
+    }
+    private int _aiScore = 0;
+    private int _AIScore
+    {
+        get => _aiScore;
+        set
+        {
+            _aiScore = value;
+            _scores.text = $"{_aiScore} - {_playerScore}";
+        }
+    }
+
     private Vector3[] _startPositions = new Vector3[3];
     private Rigidbody2D _ballRB;
 
@@ -21,6 +47,8 @@ public class GameController : MonoBehaviour
         _startPositions[2] = _AI.position;
 
         _ballRB = _ball.GetComponent<Rigidbody2D>();
+
+        _scores.text = $"{_AIScore} - {_PlayerScore}";
     }
 
     private void ResetGame()
@@ -37,15 +65,31 @@ public class GameController : MonoBehaviour
 
     }
 
+    private void AddScore_AI()
+    {
+        _AIScore++;
+    }
+
+    private void AddScore_Player()
+    {
+        _PlayerScore++;
+    }
+
     private void OnEnable()
     {
         _playerGoal._score += ResetGame;
         _AIGoal._score += ResetGame;
+
+        _playerGoal._score += AddScore_Player;
+        _AIGoal._score += AddScore_AI;
     }
 
     private void OnDisable()
     {
         _playerGoal._score -= ResetGame;
         _AIGoal._score -= ResetGame;
+
+        _playerGoal._score -= AddScore_Player;
+        _AIGoal._score -= AddScore_AI;
     }
 }
