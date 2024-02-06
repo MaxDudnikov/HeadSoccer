@@ -25,7 +25,8 @@ namespace Control
 
         internal void Jump(Rigidbody2D rigidbody2D)
         {
-            rigidbody2D.AddForce(Vector2.up * _parameters._jump, ForceMode2D.Impulse);
+            if (rigidbody2D.velocity.y == 0)
+                rigidbody2D.AddForce(Vector2.up * _parameters._jump, ForceMode2D.Impulse);
         }
 
         internal void Kick(Animator animator)

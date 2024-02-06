@@ -4,7 +4,6 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     [SerializeField] private CharacterControl _characterControl;
-    [SerializeField] private Collider2D[] _circleCollider;
     private Rigidbody2D _bodyRG;
     private Animator _animator;
 
@@ -16,7 +15,7 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _bodyRG.GetContacts(_circleCollider) > 0)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             _characterControl.Jump(_bodyRG);
         }
