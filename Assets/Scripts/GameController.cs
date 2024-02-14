@@ -80,8 +80,8 @@ public class GameController : MonoBehaviour
         _playerGoal._score += ResetGame;
         _AIGoal._score += ResetGame;
 
-        _playerGoal._score += AddScore_Player;
-        _AIGoal._score += AddScore_AI;
+        _playerGoal._score += AddScore_AI;
+        _AIGoal._score += AddScore_Player;
     }
 
     private void OnDisable()
@@ -89,7 +89,7 @@ public class GameController : MonoBehaviour
         _playerGoal._score -= ResetGame;
         _AIGoal._score -= ResetGame;
 
-        _playerGoal._score -= AddScore_Player;
-        _AIGoal._score -= AddScore_AI;
+        _playerGoal._score -= AddScore_AI;
+        _AIGoal._score -= AddScore_Player;
     }
 }
