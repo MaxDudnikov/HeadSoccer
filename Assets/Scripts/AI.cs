@@ -18,10 +18,12 @@ public class AI : MonoBehaviour
     private Animator _animator;
 
     private float _distanceTO_ball = 0;
-    private float _distanceToKick = 1.2f;
-    private float _minDistanceToBall = 2;
-    private float _minOffset_X = .5f;
-    private float _minOffset_Y = 1f;
+    private float _offCenter_X = .2f;
+    private float _upperLimitKick = .2f;
+    private float _rightLimitKick = .85f;
+    private float _decisionMakingArea = 2.2f;
+    private float _minHeightToJump = 1f;
+
     private Vector3 _ballPositionRelativeToTheAI = Vector3.zero;
 
     private void Start()
@@ -37,41 +39,45 @@ public class AI : MonoBehaviour
         Debug.DrawLine(transform.position, _AI_Goal.position, Color.green);
         Debug.DrawLine(transform.position, _Player_Goal.position, Color.blue);
 
-        //1# run back
-        if (_distanceTO_ball > _minDistanceToBall && _ballPositionRelativeToTheAI.x < _minOffset_X)
+        if (_ballPositionRelativeToTheAI.x >= _offCenter_X)
+            Attack();
+        else if (_ballPositionRelativeToTheAI.x < _offCenter_X)
+            Defense();
+    }
+
+    private void Defense()
+    {
+        //try to catch ball
+        if (_distanceTO_ball < _decisionMakingArea && _ballPositionRelativeToTheAI.y < _minHeightToJump)
+        {
+            _characterControl.Move_Left(transform);
+            _characterControl.Jump(_aiRB);
+        }
+        //run back
+        else if (_distanceTO_ball > _decisionMakingArea)
         {
             _characterControl.Move_Left(transform);
         }
-        //2# run forward
-        if (_distanceTO_ball > _minDistanceToBall && _ballPositionRelativeToTheAI.x > _minOffset_X)
+    }
+
+    private void Attack()
+    {
+        //Kick
+        if (_distanceTO_ball < _decisionMakingArea && _ballPositionRelativeToTheAI.y <= _upperLimitKick && _ballPositionRelativeToTheAI.x < _rightLimitKick)
         {
             _characterControl.Move_Right(transform);
-        }
-        //3# get ahead ball
-        else if (_distanceTO_ball > _minDistanceToBall && _ballPositionRelativeToTheAI.y > _minOffset_Y && _ballPositionRelativeToTheAI.x < _minOffset_X)
-        {
-            _characterControl.Move_Left(transform);
-        }
-        //4# try to catch ball
-        else if (_distanceTO_ball < _minDistanceToBall && _ballPositionRelativeToTheAI.y < _minOffset_Y && _ballPositionRelativeToTheAI.x < _minOffset_X)
-        {
-            _characterControl.Move_Left(transform);
-            _characterControl.Jump(_aiRB);
-        }
-        //5# get ready to attack
-        else if (_distanceTO_ball > _minDistanceToBall && _ballPositionRelativeToTheAI.y > _minOffset_Y && _ballPositionRelativeToTheAI.x > _minOffset_X)
-        {
-
-        }
-        //6# Head attack
-        else if (_distanceTO_ball < _minDistanceToBall && _ballPositionRelativeToTheAI.y > _minOffset_Y && _ballPositionRelativeToTheAI.x > _minOffset_X)
-        {
-            _characterControl.Jump(_aiRB);
-        }
-        //7# Kick
-        else if (_distanceTO_ball < _minDistanceToBall && _ballPositionRelativeToTheAI.y < _minOffset_Y && _ballPositionRelativeToTheAI.x > _minOffset_X)
-        {
             _characterControl.Kick(_animator);
+        }
+        //Head attack
+        else if (_distanceTO_ball < _decisionMakingArea && _ballPositionRelativeToTheAI.y > _upperLimitKick)
+        {
+            _characterControl.Move_Right(transform);
+            _characterControl.Jump(_aiRB);
+        }
+        //run forward
+        else if (_distanceTO_ball > _decisionMakingArea)
+        {
+            _characterControl.Move_Right(transform);
         }
     }
 

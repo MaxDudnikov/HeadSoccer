@@ -9,7 +9,6 @@ public class ScoreTrigger : MonoBehaviour
     {
         if (collision.tag == "Ball")
         {
-            print("Goal");
             _score?.Invoke();
         }
     }

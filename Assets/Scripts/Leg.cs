@@ -35,6 +35,7 @@ public class Leg : MonoBehaviour
             var position = new Vector2(transform.position.x, transform.position.y);
             var directionVector = _ball.GetComponent<Collider2D>().ClosestPoint(transform.position) - position + _parameters._angleKick;
             _ball.AddForce(directionVector * _parameters._force, ForceMode2D.Impulse);
+            _ball = null;
         }
     }
 
